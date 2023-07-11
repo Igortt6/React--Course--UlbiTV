@@ -1,5 +1,5 @@
 //імпортуемо класи із css
-import classes from './MainButton.module.css'
+import classes from './MainButton.module.scss'
 
 
 const MainButton = ({ children, ...props }) => {
