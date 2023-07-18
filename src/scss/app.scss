@@ -55,6 +55,30 @@
     }
 }
 
+.remove-btn {
+    margin-right: 0.5rem;
+}
+
+.post-enter {
+    opacity: 0;
+}
+
+.post-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+}
+
+.post-exit {
+    opacity: 1;
+}
+
+.post-exit-active {
+    opacity: 0;
+    transition: opacity 500ms ease-in;
+}
+
+
+
 .button {
     display: inline-block;
     padding: 10px 20px;
@@ -74,4 +98,40 @@
         background-color: lighten($primary, 10%);
         color: #fff;
     }
+}
+
+//========================================================================================================================================================
+
+.page-btns__wraper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid $primary;
+    background-color: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    color: $dark;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: all 0.2s;
+    margin: 10px;
+
+    &:hover {
+        background-color: lighten($primary, 10%);
+        color: #fff;
+    }
+}
+
+.page-btn__active {
+    background-color: lighten($primary, 10%);
+    color: #fff;
+
 }
