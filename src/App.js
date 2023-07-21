@@ -1,84 +1,37 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import './scss/style.scss'
-import PostList from "./components/PostList";
-import PostForm from "./components/PostForm";
-import PostFilter from "./components/PostFilter";
-import MyModal from "./components/UI/MyModal/MyModal";
-import MainButton from "./components/UI/button/MainButton";
-import { usePosts } from "./hooks/usePosts";
-import PostService from "./API/PostService";
-import Loader from "./components/UI/Loader/Loader";
-import useFetching from "./hooks/useFetching";
-import { getPagesCount } from "./utils/pages";
-import usePagination from "./hooks/usePagination";
-import Pagination from "./components/UI/pagination/Pagination";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, HashRouter, Route, Router, Routes } from "react-router-dom";
+import Navbar from "./components/UI/navbar/Navbar";
+import AppRouter from "./components/AppRouter";
+import { AuthorContext } from "./context";
+
+
 
 function App() {
-
-    const [posts, setPosts] = useState([]);
-    const [filter, setFilter] = useState({ sort: '', query: '' });
-    const [modal, setModal] = useState(false);
-    const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
-    const [totalPages, setTotalPages] = useState(0);
-    const [limit, setLimit] = useState(10);
-    const [page, setPage] = useState(1);
-    const [fetchPosts, isPostsLoading, postError] = useFetching(async () => {
-        const response = await PostService.getAll(limit, page);
-        setPosts(response.data);
-        const totalCounts = response.headers['x-total-count'];
-        setTotalPages(getPagesCount(totalCounts, limit));
-    });
+    // стейт для використовування useContext в інших місцях
+    const [isAuthor, setIsAuthor] = useState(false);
+    //стан завантаження запиту на сервер. (isAuthor - true або false)
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        fetchPosts()
-    }, [page])
-
-
-    //получаем newPost из дочернего елемента
-    const createPost = (newPost) => {
-        setPosts([...posts, newPost])
-        setModal(false);
-
-    }
-
-
-    //получаем post из дочернего елемента. 2 уровень вложености
-    const removePost = (post) => {
-        setPosts(posts.filter(p => p.id !== post.id))
-    }
-
+        if (localStorage.getItem('author')) {
+            setIsAuthor(true)
+        }
+        setIsLoading(false)
+    }, [])
 
     return (
-        <div className="App">
-            <MainButton
-                onClick={() => setModal(true)}
-            >
-                Создать пост
-            </MainButton>
-
-            <MyModal visible={modal} setVisible={setModal}>
-                <PostForm create={createPost} />
-            </MyModal>
-
-            <PostFilter
-                filter={filter}
-                setFilter={setFilter}
-            />
-            <hr style={{ margin: '15px 0', height: '2px', backgroundColor: 'black' }} />
-
-            {postError &&
-                <h1>Помилка ${postError}</h1>}
-            {isPostsLoading
-                ? <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }} ><Loader /></div>
-
-                : <PostList remove={removePost} posts={sortedAndSearchedPosts} title="Список постов 1" />
-            }
-            <Pagination
-                totalPages={totalPages}
-                page={page}
-                changePage={setPage}
-            />
-        </div >
+        <AuthorContext.Provider value={{
+            isAuthor,
+            setIsAuthor,
+            isLoading
+        }}>
+            <BrowserRouter>
+                <Navbar />
+                <div className="wraper" style={{ margin: '20px' }}>
+                    <AppRouter />
+                </div>
+            </BrowserRouter>
+        </AuthorContext.Provider>
     );
 }
 
