@@ -1,12 +1,9 @@
-import React from 'react';
+import React from 'react'
 
-import classes from './MainInput.module.css'
+import classes from './MainInput.module.scss'
 
 const MainInput = React.forwardRef((props, ref) => {
+	return <input {...props} ref={ref} className={classes.input} />
+})
 
-    return (
-        <input {...props} ref={ref} className={classes.input} />
-    )
-});
-
-export default MainInput;
+export default MainInput
