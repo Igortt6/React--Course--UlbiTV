@@ -1,31 +1,30 @@
-import React, { useState } from "react";
+// Керований лічильник.
+// Навчальний компонент
 
-
+import { useState } from 'react'
 
 const Counter = () => {
-    const [count, setCount] = useState(0)
+	const [count, setCount] = useState(0)
 
+	function increment() {
+		setCount(count + 1)
+	}
 
-    function increment() {
-        setCount(count + 1)
-    }
-
-    function decrement() {
-        setCount(count - 1)
-    }
-    return (
-        <>
-            <h1>Керований імпут</h1>
-            <h2>{count}</h2>
-            <button className="button" onClick={increment} >increment</button>
-            <button className="button" onClick={decrement} >decrement</button>
-        </>
-
-    )
-
+	function decrement() {
+		setCount(count - 1)
+	}
+	return (
+		<>
+			<h1>Керований input</h1>
+			<h2>{count}</h2>
+			<button className='button' onClick={increment}>
+				increment
+			</button>
+			<button className='button' onClick={decrement}>
+				decrement
+			</button>
+		</>
+	)
 }
 
-
-
-
-export default Counter;
+export default Counter
