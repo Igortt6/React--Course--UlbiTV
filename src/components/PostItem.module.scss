@@ -1,0 +1,39 @@
+.post {
+	padding: 10px 20px;
+	border: 2px solid #025fff;
+	border-radius: 4px;
+	background-color: transparent;
+
+	display: flex;
+	justify-content: space-between;
+
+	transition: box-shadow 0.3s ease;
+	box-shadow: 4px 2px 4px 1px rgba(0, 0, 0, 0.67);
+	&:not(:last-child) {
+		margin-bottom: 10px;
+	}
+
+	&:hover {
+		box-shadow: 6px 4px 4px 1px rgba(0, 0, 0, 0.75);
+	}
+}
+
+.content {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+.title {
+	font-size: 24px;
+	font-weight: bold;
+	line-height: 2;
+}
+.text {
+}
+.btns {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}

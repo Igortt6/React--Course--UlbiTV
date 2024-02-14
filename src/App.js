@@ -1,13 +1,25 @@
-import MainButton from './components/UI/button/MainButton.jsx'
-import MainInput from './components/UI/input/MainInput.jsx'
+import { useState } from 'react'
+import PostForm from './components/PostForm.jsx'
+import PostList from './components/PostList.jsx'
+import './scss/App.scss'
+import './scss/null.scss'
 
 function App() {
+	const [posts, setPosts] = useState([
+		{ id: 1, title: 'Title', body: 'Description1' },
+		{ id: 3, title: 'Title2', body: 'Description3' },
+		{ id: 15, title: 'Title4', body: 'Description4' },
+	])
+
+	const createPost = newPost => {
+		setPosts([...posts, newPost])
+	}
+
 	return (
-		<>
-			<h1>Заголовок h1</h1>
-			<MainButton>Головка кнопка UI компонент</MainButton>
-			<MainInput placeholder='MainInput' />
-		</>
+		<div className='App'>
+			<PostForm create={createPost} />
+			<PostList posts={posts} title='First list' />
+		</div>
 	)
 }
 
