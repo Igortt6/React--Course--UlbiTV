@@ -11,14 +11,23 @@ function App() {
 		{ id: 15, title: 'Title4', body: 'Description4' },
 	])
 
+	// Кол бек функція, для доступу до state з нижчого елементу.
 	const createPost = newPost => {
 		setPosts([...posts, newPost])
+	}
+
+	const removePost = post => {
+		setPosts(posts.filter(p => p.id !== post.id))
 	}
 
 	return (
 		<div className='App'>
 			<PostForm create={createPost} />
-			<PostList posts={posts} title='First list' />
+			{posts.length ? (
+				<PostList remove={removePost} posts={posts} title='First list' />
+			) : (
+				<h1>Create post please</h1>
+			)}
 		</div>
 	)
 }

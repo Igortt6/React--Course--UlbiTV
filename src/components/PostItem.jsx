@@ -12,7 +12,7 @@ const PostItem = props => {
 			</div>
 			<div className={classes.btns}>
 				<MainButton>Add</MainButton>
-				<MainButton>Delete</MainButton>
+				<MainButton onClick={() => props.remove(props.post)}>Delete</MainButton>
 			</div>
 		</div>
 	)
