@@ -1,15 +1,19 @@
 import { useState } from 'react'
 import PostForm from './components/PostForm.jsx'
 import PostList from './components/PostList.jsx'
+import MainSelect from './components/UI/select/MainSelect.jsx'
 import './scss/App.scss'
 import './scss/null.scss'
 
 function App() {
 	const [posts, setPosts] = useState([
-		{ id: 1, title: 'Title', body: 'Description1' },
-		{ id: 3, title: 'Title2', body: 'Description3' },
-		{ id: 15, title: 'Title4', body: 'Description4' },
+		{ id: 1, title: 'aaa', body: 'vaaa' },
+		{ id: 3, title: 'bbbb', body: 'adasd' },
+		{ id: 15, title: 'cccc', body: 'sdfsdfsd' },
 	])
+
+	//Зберігаємо вибраний режим сортування. MainSelect
+	const [selectedSort, setSelectedSort] = useState('')
 
 	// Кол бек функція, для доступу до state з нижчого елементу.
 	const createPost = newPost => {
@@ -20,9 +24,23 @@ function App() {
 		setPosts(posts.filter(p => p.id !== post.id))
 	}
 
+	//Сортування. MainSelect
+	const sortPosts = sort => {
+		setSelectedSort(sort)
+		setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])))
+	}
 	return (
 		<div className='App'>
 			<PostForm create={createPost} />
+			<MainSelect
+				value={selectedSort}
+				onChange={sortPosts}
+				defaultValue='sort by'
+				options={[
+					{ value: 'title', name: 'By name' },
+					{ value: 'body', name: 'By text' },
+				]}
+			/>
 			{posts.length ? (
 				<PostList remove={removePost} posts={posts} title='First list' />
 			) : (
