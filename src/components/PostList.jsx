@@ -2,6 +2,10 @@ import PostItem from './PostItem'
 import classes from './PostList.module.scss'
 
 const PostList = ({ posts, title, remove }) => {
+	if (!posts.length) {
+		return <h2 className={classes.title}>No posts!</h2>
+	}
+
 	return (
 		<div>
 			<h2 className={classes.title}>{title}</h2>

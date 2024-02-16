@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import PostFilter from './components/PostFilter.jsx'
 import PostForm from './components/PostForm.jsx'
 import PostList from './components/PostList.jsx'
-import MainSelect from './components/UI/select/MainSelect.jsx'
 import './scss/App.scss'
 import './scss/null.scss'
 
@@ -12,8 +12,25 @@ function App() {
 		{ id: 15, title: 'cccc', body: 'sdfsdfsd' },
 	])
 
-	//Зберігаємо вибраний режим сортування. MainSelect
-	const [selectedSort, setSelectedSort] = useState('')
+	//========================================================================================================================================================
+	// NOTE: Блок для пошуку. Компонент PostFilter.
+	const [filter, setFilter] = useState({ sort: '', query: '' })
+
+	const sortedPosts = useMemo(() => {
+		if (filter.sort) {
+			return [...posts].sort((a, b) =>
+				a[filter.sort].localeCompare(b[filter.sort])
+			)
+		}
+		return posts
+	}, [filter.sort, posts])
+
+	const sortedAndSearchedPosts = useMemo(() => {
+		return sortedPosts.filter(post =>
+			post.title.toLowerCase().includes(filter.query.toLowerCase())
+		)
+	}, [filter.query, sortedPosts])
+	//========================================================================================================================================================
 
 	// Кол бек функція, для доступу до state з нижчого елементу.
 	const createPost = newPost => {
@@ -24,28 +41,15 @@ function App() {
 		setPosts(posts.filter(p => p.id !== post.id))
 	}
 
-	//Сортування. MainSelect
-	const sortPosts = sort => {
-		setSelectedSort(sort)
-		setPosts([...posts].sort((a, b) => a[sort].localeCompare(b[sort])))
-	}
 	return (
 		<div className='App'>
 			<PostForm create={createPost} />
-			<MainSelect
-				value={selectedSort}
-				onChange={sortPosts}
-				defaultValue='sort by'
-				options={[
-					{ value: 'title', name: 'By name' },
-					{ value: 'body', name: 'By text' },
-				]}
+			<PostFilter filter={filter} setFilter={setFilter} />
+			<PostList
+				remove={removePost}
+				posts={sortedAndSearchedPosts}
+				title='Posts list'
 			/>
-			{posts.length ? (
-				<PostList remove={removePost} posts={posts} title='First list' />
-			) : (
-				<h1>Create post please</h1>
-			)}
 		</div>
 	)
 }
