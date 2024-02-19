@@ -10,6 +10,7 @@ const Pagination = ({ totalPage, page, changePage }) => {
 				<span
 					onClick={() => changePage(p)}
 					className={page === p ? `${cl.page} ${cl.page_active}` : cl.page}
+					key={p}
 				>
 					{p}
 				</span>
