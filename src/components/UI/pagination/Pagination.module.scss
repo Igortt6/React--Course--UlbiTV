@@ -1,0 +1,25 @@
+.wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	margin-top: 30px;
+	flex-wrap: wrap;
+}
+.page {
+	cursor: pointer;
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	border: 1px solid #025fff;
+	border-radius: 50%;
+	background-color: transparent;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.page_active {
+	background-color: #025fff;
+	color: #fff;
+}
