@@ -1,38 +1,33 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
+import PostService from './API/PostService.jsx'
 import PostFilter from './components/PostFilter.jsx'
 import PostForm from './components/PostForm.jsx'
 import PostList from './components/PostList.jsx'
+import Loader from './components/UI/Loader/Loader.jsx'
 import MainButton from './components/UI/button/MainButton.jsx'
 import Popup from './components/UI/modal/Popup.jsx'
+import { usePosts } from './hooks/usePosts.js'
 import './scss/App.scss'
 import './scss/null.scss'
 
 function App() {
-	const [posts, setPosts] = useState([
-		{ id: 1, title: 'aaa', body: 'vaaa' },
-		{ id: 3, title: 'bbbb', body: 'adasd' },
-		{ id: 15, title: 'cccc', body: 'sdfsdfsd' },
-	])
+	const [posts, setPosts] = useState([])
 	const [popup, setPopup] = useState(false)
-	//========================================================================================================================================================
-	// NOTE: Блок для пошуку. Компонент PostFilter.
 	const [filter, setFilter] = useState({ sort: '', query: '' })
+	const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
+	const [isPostsLoading, setIsPostsLoading] = useState(false)
 
-	const sortedPosts = useMemo(() => {
-		if (filter.sort) {
-			return [...posts].sort((a, b) =>
-				a[filter.sort].localeCompare(b[filter.sort])
-			)
-		}
-		return posts
-	}, [filter.sort, posts])
+	useEffect(() => {
+		fetchPosts()
+	}, [])
 
-	const sortedAndSearchedPosts = useMemo(() => {
-		return sortedPosts.filter(post =>
-			post.title.toLowerCase().includes(filter.query.toLowerCase())
-		)
-	}, [filter.query, sortedPosts])
-	//========================================================================================================================================================
+	//Запит на сервер, для отримання списку постів
+	async function fetchPosts() {
+		setIsPostsLoading(true)
+		const posts = await PostService.getAll()
+		setPosts(posts)
+		setIsPostsLoading(false)
+	}
 
 	// Кол бек функція, для доступу до state з нижчого елементу.
 	const createPost = newPost => {
@@ -51,11 +46,17 @@ function App() {
 				<PostForm create={createPost} />
 			</Popup>
 			<PostFilter filter={filter} setFilter={setFilter} />
-			<PostList
-				remove={removePost}
-				posts={sortedAndSearchedPosts}
-				title='Posts list'
-			/>
+			{isPostsLoading ? (
+				<div style={{ display: 'flex', justifyContent: 'center' }}>
+					<Loader />
+				</div>
+			) : (
+				<PostList
+					remove={removePost}
+					posts={sortedAndSearchedPosts}
+					title='Posts list'
+				/>
+			)}
 		</div>
 	)
 }

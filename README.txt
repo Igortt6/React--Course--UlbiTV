@@ -34,6 +34,7 @@ NOTE: commit: removePost
 01:15:10 ➝ useMemo. Мемоизация. Кеширование
 01:23:50 ➝ Модальное окно. Переиспользуемый UI компонент
 01:30:23 ➝ Анимации. React transition group
+TODO:https://dev.to/arafat4693/best-animation-libraries-for-react-156n
 01:33:40 ➝ Декомпозиция. Кастомные хуки
 01:36:20 ➝ Работа с сервером. Axios
 01:38:40 ➝ Жизненный цикл компонента. useEffect
